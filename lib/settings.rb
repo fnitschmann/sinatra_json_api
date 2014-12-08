@@ -27,8 +27,6 @@ class Settings
 
   def self.load_config_file
     file = File.expand_path("../../config.yml", __FILE__)
-    if File.exists?(file)
-      YAML.load_file(file)
-    end
+    YAML.load_file(file) if File.exists?(file)
   end
 end

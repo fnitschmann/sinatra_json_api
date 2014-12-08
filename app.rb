@@ -3,7 +3,6 @@ require "json"
 require "sinatra/base"
 require "sinatra/json"
 require "sinatra/reloader"
-require "pry"
 
 require "./lib/settings"
 
