@@ -42,8 +42,4 @@ class Customer
 
   property :updated_at,
     DateTime
-
-  def url
-    "/customers/#{self.id}"
-  end
 end

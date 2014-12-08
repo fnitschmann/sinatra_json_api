@@ -26,6 +26,10 @@ class App < Sinatra::Application
     end
   end
 
+  get "/" do
+    status 200
+  end
+
   get "/customers" do
     return status 401 unless @authorized
 

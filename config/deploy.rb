@@ -14,9 +14,16 @@ set :branch, "master"
 set :keep_releases, 3
 
 set :linked_files, %w{config.yml}
-set :linked_dirs, %w{bin db}
+set :linked_dirs, %w{bin db tmp}
 
 namespace :deploy do
+  desc "restart the application"
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :touch, release_path.join("tmp/restart.txt")
+    end
+  end
+
   after :publishing, "deploy:restart"
   after :finishing, "deploy:cleanup"
 end
