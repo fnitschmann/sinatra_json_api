@@ -1,5 +1,9 @@
 source "http://rubygems.org"
 
+gem "capistrano"
+gem "capistrano-bundler"
+gem "capistrano-rbenv"
+
 gem "data_mapper"
 gem "dm-sqlite-adapter"
 gem "rake"
