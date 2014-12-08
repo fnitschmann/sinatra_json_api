@@ -1,0 +1,3 @@
+---
+# Put the auth token for the app here or run `rake app:create:token`
+auth_token: ''
