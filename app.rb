@@ -1,4 +1,5 @@
 # coding: utf-8
+require "logger"
 require "json"
 require "sinatra/base"
 require "sinatra/json"
@@ -11,6 +12,12 @@ Dir[File.expand_path("../models/*.rb", __FILE__)].each do |file|
 end
 
 class App < Sinatra::Application
+  ::Logger.class_eval { alias :write :'<<' }
+  access_log = ::File.new(::File.join(::File.expand_path("../log/access.log", __FILE__)),"a+")
+  access_logger = ::Logger.new(access_log)
+  error_logger = ::File.new(::File.join(::File.expand_path("../log/error.log", __FILE__)),"a+")
+  error_logger.sync = true
+
   configure :development, :production do
     Settings.configure_database
   end
@@ -20,12 +27,16 @@ class App < Sinatra::Application
   end
 
   configure do
+    use ::Rack::CommonLogger, access_logger
+
     if Product.all.count == 0
       Product.create_defaults
     end
   end
 
   before do
+    env["rack.errors"] = error_logger
+
     auth_token = Settings.auth_token
     if !auth_token.nil? && auth_token == params["token"]
       @authorized = true

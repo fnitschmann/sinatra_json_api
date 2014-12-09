@@ -6,4 +6,4 @@ rescue LoadError
 end
 
 load "lib/tasks/app.rake"
-load "lib/tasks/db.rake"
+load "lib/tasks/db.rake" 

@@ -6,6 +6,7 @@ gem "capistrano-rbenv"
 
 gem "data_mapper"
 gem "dm-sqlite-adapter"
+gem "logger"
 gem "rake"
 gem "sinatra"
 gem "sinatra-contrib"

@@ -1,4 +1,5 @@
 config.yml
 .capistrano/
 db/
+log/
 .rbenv-gemsets
