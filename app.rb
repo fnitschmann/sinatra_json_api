@@ -19,6 +19,12 @@ class App < Sinatra::Application
     Settings.configure_test_database
   end
 
+  configure do
+    if Product.all.count == 0
+      Product.create_defaults
+    end
+  end
+
   before do
     auth_token = Settings.auth_token
     if !auth_token.nil? && auth_token == params["token"]
@@ -65,6 +71,40 @@ class App < Sinatra::Application
     else
       status 400
       { :errors => customer.errors.full_messages }.to_json
+    end
+  end
+
+  get "/products" do
+    content_type :json
+    Product.all.to_json
+  end
+
+  get "/products/:id" do
+    content_type :json
+    product = Product.get(params[:id])
+
+    if product
+      product.to_json
+    else
+      status 404
+      body "404: Not found"
+    end
+  end
+
+  post "/products" do
+    return status 401 unless @authorized
+
+    content_type :json
+
+    product_params = params.tap { |p| p.delete("token") }
+    product = Product.new(product_params)
+
+    if product.save
+      status 201
+      product.to_json
+    else
+      status 400
+      { :errors => product.errors.full_messages }.to_json
     end
   end
 end
